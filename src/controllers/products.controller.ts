@@ -10,6 +10,7 @@ import {
   HttpStatus,
   HttpCode,
   Res,
+  ParseIntPipe,
 } from '@nestjs/common';
 
 import { Response } from 'express';
@@ -41,11 +42,11 @@ export class ProductsController {
   //HTTP response status codes
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
-  getOne(@Param('productId') productId: string) {
+  getOne(@Param('productId', ParseIntPipe) productId: number) {
     // response.status(200).send({
     //   message: `product ${productId}`,
     // });
-    return this.productsService.findOne(+productId);
+    return this.productsService.findOne(productId);
   }
 
   @Post()
