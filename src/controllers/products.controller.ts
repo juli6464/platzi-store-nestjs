@@ -10,11 +10,13 @@ import {
   HttpStatus,
   HttpCode,
   Res,
-  ParseIntPipe,
+  // ParseIntPipe,
 } from '@nestjs/common';
 
 import { Response } from 'express';
-import { ProductsService } from 'src/services/products.service';
+import { ParseIntPipe } from '../common/parse-int/parse-int.pipe';
+
+import { ProductsService } from './../services/products.service';
 
 @Controller('products')
 export class ProductsController {
@@ -27,19 +29,16 @@ export class ProductsController {
     @Query('brand') brand: string,
   ) {
     // return {
-    //   message: `products: limit=> ${limit} offset=> ${offset} brand => ${brand}`,
+    //   message: `products limit=> ${limit} offset=> ${offset} brand=> ${brand}`,
     // };
     return this.productsService.findAll();
   }
 
   @Get('filter')
   getProductFilter() {
-    return {
-      message: `yo soy un filter`,
-    };
+    return `yo soy un filter`;
   }
 
-  //HTTP response status codes
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
   getOne(@Param('productId', ParseIntPipe) productId: number) {
@@ -59,13 +58,8 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() payload: any) {
-    // return {
-    //   id,
-    //   payload,
-    // };
+  update(@Param('id') id: string, @Body() payload: any) {
     return this.productsService.update(+id, payload);
-
   }
 
   @Delete(':id')
